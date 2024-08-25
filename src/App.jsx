@@ -1,35 +1,70 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import RandomVerse from "./components/RandomVerse";
+import Home from "./components/Home";
+import "./index.css";
+import {
+  createBrowserRouter,
+  NavLink,
+  Outlet,
+  RouterProvider,
+} from "react-router-dom";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div>
+      <RouterProvider router={router} />
+    </div>
+  );
 }
 
-export default App
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: (
+      <section>
+        <div className="bg-blue-200 flex justify-between items-center p-4">
+          <h1 className="font-bold">Home</h1>
+          <div className="gap-8 flex">
+            <NavLink
+              to="/home"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-blue-500 font-bold drop-shadow-[1.2px_1.2px_black] hover:text-black hover:drop-shadow-[1.2px_1.2px_white]"
+                  : "text-black drop-shadow-[1.2px_1.2px_white] font-bold hover:text-blue-500 hover:drop-shadow-[1.2px_1.2px_black]"
+              }
+              // style={({ isActive }) => (isActive ? { color: "white" } : {})}
+            >
+              Home
+            </NavLink>
+            <NavLink
+              to="/verse"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-blue-500 font-bold drop-shadow-[1.2px_1.2px_black] hover:text-black hover:drop-shadow-[1.2px_1.2px_white]"
+                  : "text-black drop-shadow-[1.2px_1.2px_white] font-bold hover:text-blue-500 hover:drop-shadow-[1.2px_1.2px_black]"
+              }
+              // style={({ isActive }) => (isActive ? { color: "white" } : {})}
+            >
+              Verses
+            </NavLink>
+          </div>
+        </div>
+        <div className="bg-gradient-to-r from-cyan-500 to-blue-500 h-screen text-center items-center justify-center flex flex-col">
+          <Outlet></Outlet>
+        </div>
+      </section>
+    ),
+    children: [
+      {
+        path: "home",
+        element: <Home />,
+      },
+      {
+        path: "verse",
+        element: <RandomVerse />,
+      },
+    ],
+  },
+]);
+
+export default App;
